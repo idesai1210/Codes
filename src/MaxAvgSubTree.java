@@ -15,9 +15,9 @@ class MaxAvgSubTree {
 		int v;
 		Node n;
 
-		INT(int a, Node n) {
+		INT(int a, Node b) {
 			v = a;
-			n = n;
+			n = b;
 		}
 	}
 
@@ -42,19 +42,19 @@ class MaxAvgSubTree {
 		INT tmp = new INT(0, root);
 		INT left = (INT)findLargestSubtreeSumUtil(root.left, ans);
 		INT right = (INT)findLargestSubtreeSumUtil(root.right, ans);
-		tmp.v = (int)(root.key + left.v + right.v) / 3;
+		tmp.v = (int)(root.key + left.v + right.v) / maxDepth(root);
 
 		// Update answer if current subtree
 		// sum is greater than answer so far.
 		
 		if (tmp.v > ans.v ) {
 			ans.v = Math.max(ans.v, tmp.v);
-			ans.n = root;
+			ans.n = tmp.n;
 		}
 
 		// Return current subtree
 		// sum to its parent node.
-		return ans;
+		return new INT(root.key, root);
 	}
 
 	// Function to find
@@ -75,19 +75,36 @@ class MaxAvgSubTree {
 
 		return ans.n.key;
 	}
+	static int maxDepth(Node node)  
+    { 
+        if (node == null) 
+            return 0; 
+        else 
+        { 
+            /* compute the depth of each subtree */
+            int lDepth = maxDepth(node.left); 
+            int rDepth = maxDepth(node.right); 
+   
+            /* use the larger one */
+            if (lDepth > rDepth) 
+                return (lDepth + 1); 
+             else 
+                return (rDepth + 1); 
+        } 
+    } 
 
 	// Driver Code
 	public static void main(String args[]) {
 		/*
-		2 ​ 
+		20 ​ 
 	     /   \ 
-	  25       14 
+	  1       14 
 	  / \      / \ 
 	-1  1     5  -1
 	*/
 
-		Node root = newNode(2);
-		root.left = newNode(25);
+		Node root = newNode(20);
+		root.left = newNode(1);
 		root.right = newNode(14);
 		root.left.left = newNode(-1);
 		root.left.right = newNode(1);
